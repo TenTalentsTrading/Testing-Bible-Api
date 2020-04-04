@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		094E854B2433F2D700BF17EB /* ScriptureReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E854A2433F2D600BF17EB /* ScriptureReference.swift */; };
+		094E854D24353E2C00BF17EB /* ReferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E854C24353E2C00BF17EB /* ReferenceView.swift */; };
+		094E854F2437C90100BF17EB /* AudioTranscribing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E854E2437C90100BF17EB /* AudioTranscribing.swift */; };
+		094E85512437F16F00BF17EB /* PassageParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E85502437F16F00BF17EB /* PassageParsing.swift */; };
 		096BA51924269DF40083CD16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BA51824269DF40083CD16 /* AppDelegate.swift */; };
 		096BA51B24269DF40083CD16 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BA51A24269DF40083CD16 /* SceneDelegate.swift */; };
 		096BA51D24269DF40083CD16 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BA51C24269DF40083CD16 /* ContentView.swift */; };
@@ -20,6 +23,9 @@
 
 /* Begin PBXFileReference section */
 		094E854A2433F2D600BF17EB /* ScriptureReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptureReference.swift; sourceTree = "<group>"; };
+		094E854C24353E2C00BF17EB /* ReferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceView.swift; sourceTree = "<group>"; };
+		094E854E2437C90100BF17EB /* AudioTranscribing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTranscribing.swift; sourceTree = "<group>"; };
+		094E85502437F16F00BF17EB /* PassageParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassageParsing.swift; sourceTree = "<group>"; };
 		096BA51524269DF40083CD16 /* Testing-Bible-Api.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Testing-Bible-Api.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		096BA51824269DF40083CD16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		096BA51A24269DF40083CD16 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +73,9 @@
 				096BA51824269DF40083CD16 /* AppDelegate.swift */,
 				096BA51A24269DF40083CD16 /* SceneDelegate.swift */,
 				096BA51C24269DF40083CD16 /* ContentView.swift */,
+				094E85502437F16F00BF17EB /* PassageParsing.swift */,
+				094E854E2437C90100BF17EB /* AudioTranscribing.swift */,
+				094E854C24353E2C00BF17EB /* ReferenceView.swift */,
 				096BA51E24269DF90083CD16 /* Assets.xcassets */,
 				096BA52324269DF90083CD16 /* LaunchScreen.storyboard */,
 				096BA52624269DF90083CD16 /* Info.plist */,
@@ -171,7 +180,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				094E85512437F16F00BF17EB /* PassageParsing.swift in Sources */,
 				096BA51924269DF40083CD16 /* AppDelegate.swift in Sources */,
+				094E854D24353E2C00BF17EB /* ReferenceView.swift in Sources */,
+				094E854F2437C90100BF17EB /* AudioTranscribing.swift in Sources */,
 				096BA51B24269DF40083CD16 /* SceneDelegate.swift in Sources */,
 				096BA52E2426A24D0083CD16 /* WebService.swift in Sources */,
 				094E854B2433F2D700BF17EB /* ScriptureReference.swift in Sources */,

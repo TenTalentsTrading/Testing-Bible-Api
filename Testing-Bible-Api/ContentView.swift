@@ -10,83 +10,146 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @ObservedObject var reference = ScriptureReference()
+    @EnvironmentObject var reference : ScriptureReference
+    @ObservedObject var closedCap = ClosedCaptioning()
 
-    var body: some View {
-        NavigationView{
-            Form {
-                Section {
-                    Picker("Book Selector", selection: $reference.selectedBook){
-                        ForEach(0 ..< reference.books.count){
-                            Text("\(self.reference.books[$0])")
-                        }
-                    }
+    @State var isActive : Bool = false
+    @State var showReference = false
+    @State var shouldShowPassage = true
 
-                    Picker("Chapter Selector", selection: $reference.selectedChapter){
-                        ForEach(reference.chapters, id: \.self) { chapter in
-                            Text("\(chapter)")
-                        }
-                    }
-                    
-
-                    Picker("Start Verse", selection: $reference.selectedStartVerse){
-                       ForEach(reference.verses, id: \.self) { verse in
-                           Text("\(verse)")
-                       }
-                   }
-                    
-                    Picker("Start Verse", selection: $reference.selectedEndVerse){
-                        ForEach(reference.remainingVerses, id: \.self) { verse in
-                            Text("\(verse)")
-                        }
-                    }
-                    
-                    Button(action: {
-                        self.reference.loadPassages(reference: self.assembleRef())
-                    }) {
-                        Text("Load Passage")
-                    }
-                }
-
-            
-                Section{
-                    List {
-                        VStack{
-                          if reference.passages.count > 0 {
-                                    ScrollView(.vertical) {
-                                    Text("\(reference.passages[0])")
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    struct ReferenceStyler: ViewModifier {
+           func body(content: Content) -> some View {
+               return content
+               .font(Font.custom("Arial Rounded MT Bold", size: 18))
+           }
+       }
+    
+    struct ButtonStyler: ViewModifier {
+           func body(content: Content) -> some View {
+               return content
+               .font(Font.custom("Arial Rounded MT", size: 16))
+           }
+       }
+    
+    struct ButtonStylerLarge: ViewModifier {
+        func body(content: Content) -> some View {
+            return content
+            .font(Font.custom("Arial Rounded MT Bold", size: 30))
         }
     }
     
-    func assembleRef() -> String {
-        
-        if reference.selectedStartVerse != 0 {
-            if reference.selectedEndVerse != 0 {
-                return "\(reference.books[reference.selectedBook])+\(reference.selectedChapter):\(reference.selectedStartVerse)-\(reference.selectedEndVerse)"
-            }
-            else{
-                return "\(reference.books[reference.selectedBook])+\(reference.selectedChapter):\(reference.selectedStartVerse)-\(reference.verses.count)"
-            }
-        }
-            
-        else{
-            return "\(reference.books[reference.selectedBook])+\(reference.selectedChapter)"
+    struct PassageTextStyler: ViewModifier {
+        func body(content: Content) -> some View {
+            return content
+            .font(Font.custom("Arial Rounded MT", size: 20))
         }
     }
-}
+    
+    var body: some View {
+        
+        VStack{
+        Spacer()
+        Divider()
+        NavigationLink(
+            destination: ReferenceView(shouldPopToRootView: self.$isActive),
+            isActive: self.$isActive) {
+                Text(reference.beautifyReference())
+            }
+            .isDetailLink(false)
+        .modifier(ReferenceStyler())
+        Divider()
 
+        Spacer()
+//                    HStack {
+//                        Text(self.closedCap.captioning)
+//                            .font(.body)
+//                            .truncationMode(.head)
+//                            .lineLimit(4)
+//                            .padding()
+//                    }
+//                    .frame(width: 350, height: 200)
+//                    .background(Color.red.opacity(0.25))
+//                    .padding()
+    
+            if shouldShowPassage {
+                ScrollView(.vertical) {
+                    if self.reference.areWordsDropped == true {
+                        Text("\(reference.firstWordPassage)")
+                    }
+                    else if self.reference.isOnlyFirstLetterShown == true {
+                        Text("\(reference.firstLetterPassage)")
+                    }
+                    else{
+                        Text("\(reference.passage)")
+                    }
+                }.padding()
+                .modifier(PassageTextStyler())
+            }
+            
+        Spacer()
+        
+        HStack{
+            Spacer()
+            
+            Button(action: {
+                self.reference.isOnlyFirstLetterShown.toggle()
+                self.shouldShowPassage = false
+            }) {
+                VStack{
+                    HStack{
+                        Text("C").padding(-4)
+                        Text("at").strikethrough(true).padding(-4)
+                    }.modifier(ButtonStylerLarge())
+                    Text("Drop Letters").modifier(ButtonStyler())
+                }.foregroundColor(self.reference.isFirstLetterDroppedColor)
+            }
+            .onAppear {
+                self.closedCap.getPermission()}
+            .padding()
+            
+            Spacer()
+            
+            Button(action: {
+                self.closedCap.micButtonTapped()
+            }) {
+                Image(systemName: !self.closedCap.micEnabled ? "mic.slash" : (self.closedCap.isPlaying ? "mic.circle.fill" : "mic.circle"))
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 75)
+                }
+                .onAppear {
+                    self.closedCap.getPermission()}
+                .padding()
+            
+            Spacer()
+
+            Button(action: {
+                self.reference.areWordsDropped.toggle()
+            }) {
+                VStack{
+                Text("Cat").strikethrough(true).modifier(ButtonStylerLarge())
+                    Text("Drop Words").modifier(ButtonStyler())
+                }.foregroundColor(self.reference.areWordsDroppedColor)
+            }
+            .padding()
+            
+            Spacer()
+
+            }
+            .onAppear(perform: reference.loadPassages)
+            .navigationBarTitle("Bible By Heart")
+        }
+    }
+    
+    func removeAllButFirstLettersFromPassage() {
+        let newText = PassageParsing().DropAllButFirstLetters(text: reference.passage)
+        reference.passage = newText
+    }
+}
 
 struct ContentView_Previews: PreviewProvider {
-    
-    static let reference = ScriptureReference()
-    
     static var previews: some View {
-        ContentView().environmentObject(reference)
+        ContentView().environmentObject(ScriptureReference())
     }
 }
+

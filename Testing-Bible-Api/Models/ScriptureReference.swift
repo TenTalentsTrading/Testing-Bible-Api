@@ -1,5 +1,5 @@
 //
-//  ScriptureReference.swift
+//  Scriptureswift
 //  Testing-Bible-Api
 //
 //  Created by Brittany Turner on 3/31/20.
@@ -7,18 +7,19 @@
 //
 
 import Foundation
+import SwiftUI
+
 
 class ScriptureReference: ObservableObject {
-
+    
+    @Published var books = BibleBookList().getBooks()
     @Published var apiBooks = [BookRecord]()
     @Published var bookId = "GEN"
     @Published var selectedBook = 0 {
     didSet {
-            print("Selection changed to \(selectedBook)")
             if (apiBooks.count > 0) {
                 let record: BookRecord = apiBooks.filter{$0.name == books[selectedBook]}.first!
                 bookId = record.id
-                print("Changed book id to \(bookId)")
             }
             else {
                 print("Could not change book id...")
@@ -28,8 +29,8 @@ class ScriptureReference: ObservableObject {
         }
     }
     
-    @Published var books = BibleBookList().getBooks()
-
+    
+    //Chapter Variables
     @Published var chapters = [Int]()
     @Published var apiChapters = [ChapterRecord]()
     @Published var selectedChapter = 1 {
@@ -38,6 +39,8 @@ class ScriptureReference: ObservableObject {
         }
     }
     
+    
+    //Verse Variables
     @Published var verses = [Int]()
     @Published var apiVerses = [VerseRecord]()
     @Published var selectedStartVerse = Int() {
@@ -48,20 +51,63 @@ class ScriptureReference: ObservableObject {
     @Published var selectedEndVerse = Int()
     @Published var remainingVerses = [Int]()
     
-    @Published var passages = [String]()
     
+    //Main Passage Variables
+    @Published var assembledReference = String()
+    @Published var passage = String()
+    @Published var firstLetterPassage = String()
+    @Published var firstWordPassage = String ()
+    
+    
+    //Variables for Dropping First letter
+    @Published var isFirstLetterDroppedColor: Color = Color.blue
+    @Published var isOnlyFirstLetterShown = false {
+        didSet {
+            if isOnlyFirstLetterShown == true {
+                areWordsDropped = false
+                isFirstLetterDroppedColor = Color.red
+            }
+            else{
+                isFirstLetterDroppedColor = Color.blue
+            }
+        }
+    }
+    
+    @Published var areWordsDroppedColor: Color = Color.blue
+    @Published var areWordsDropped = false {
+        didSet {
+            if areWordsDropped == true {
+                isOnlyFirstLetterShown = false
+                areWordsDroppedColor = Color.red
+            }
+            else{
+                areWordsDroppedColor = Color.blue
+            }
+        }
+    }
+        
+    //Running these functions upon initialization to prepare the object
     init() {
         getChapterApi()
         getVersesApi()
         loadBooksApi()
+        assembleRef()
+        loadPassages()
     }
     
-    func loadPassages(reference: String) {
-        guard let url = URL(string: "https://api.esv.org/v3/passage/text/?q=\(reference)") else {
+    
+    //object functions to get stuff done!
+    
+    func setAlternatePassages(){
+        firstLetterPassage = PassageParsing().DropAllButFirstLetters(text: passage)
+        firstWordPassage = PassageParsing().DropAllButFirstWord(text: passage)
+    }
+    
+    func loadPassages() {
+        guard let url = URL(string: "https://api.esv.org/v3/passage/text/?q=\(assembledReference)&include-passage-references=false&include-headings=false") else {
             print("Invalid URL")
             return
         }
-        
         var request = URLRequest(url: url)
         request.setValue("Token a2e16e4aa6e439cc1478cdbf057411d633375cf5", forHTTPHeaderField: "Authorization")
 
@@ -71,7 +117,8 @@ class ScriptureReference: ObservableObject {
                     // we have good data – go back to the main thread
                     DispatchQueue.main.async {
                         // update our UI
-                        self.passages = decodedResponse.passages
+                        self.passage = decodedResponse.passages[0]
+                        self.setAlternatePassages()
                     }
 
                     // everything is good, so we can exit
@@ -104,7 +151,6 @@ class ScriptureReference: ObservableObject {
                             let chapterCount = self.apiChapters.count-1
                             let chapterArray = Array(1...chapterCount)
                             self.chapters = chapterArray
-                            print("Chapter count is now...\(self.chapters)")
                         }
                     }
 
@@ -129,8 +175,6 @@ class ScriptureReference: ObservableObject {
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data {
-                var str = String(decoding: data, as: UTF8.self)
-                print(str)
                 if let decodedResponse = try? JSONDecoder().decode(VersesResponse.self, from: data) {
                     // we have good data – go back to the main thread
                     DispatchQueue.main.async {
@@ -178,5 +222,24 @@ class ScriptureReference: ObservableObject {
 
             // if we're still here it means there was a problem
             print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")        }.resume()
+    }
+    
+    func assembleRef() {
+        if selectedStartVerse != 0 {
+            if selectedEndVerse != 0 {
+                assembledReference =  "\(books[selectedBook])+\(selectedChapter):\(selectedStartVerse)-\(selectedEndVerse)"
+            }
+            else{
+                assembledReference = "\(books[selectedBook])+\(selectedChapter):\(selectedStartVerse)-\(verses.count)"
+            }
+        }
+            
+        else{
+            assembledReference = "\(books[selectedBook])+\(selectedChapter)"
+        }
+    }
+    
+    func beautifyReference() -> String{
+        return assembledReference.replacingOccurrences(of: "+", with: " ")
     }
 }
