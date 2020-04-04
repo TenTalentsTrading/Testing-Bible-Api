@@ -71,7 +71,7 @@ struct ContentView: View {
 //                    .background(Color.red.opacity(0.25))
 //                    .padding()
     
-            if shouldShowPassage {
+    if shouldShowPassage {
                 ScrollView(.vertical) {
                     if self.reference.areWordsDropped == true {
                         Text("\(reference.firstWordPassage)")
@@ -93,7 +93,7 @@ struct ContentView: View {
             
             Button(action: {
                 self.reference.isOnlyFirstLetterShown.toggle()
-                self.shouldShowPassage = false
+
             }) {
                 VStack{
                     HStack{
@@ -103,14 +103,13 @@ struct ContentView: View {
                     Text("Drop Letters").modifier(ButtonStyler())
                 }.foregroundColor(self.reference.isFirstLetterDroppedColor)
             }
-            .onAppear {
-                self.closedCap.getPermission()}
             .padding()
             
             Spacer()
             
             Button(action: {
                 self.closedCap.micButtonTapped()
+//                self.shouldShowPassage.toggle()
             }) {
                 Image(systemName: !self.closedCap.micEnabled ? "mic.slash" : (self.closedCap.isPlaying ? "mic.circle.fill" : "mic.circle"))
                     .resizable()
@@ -120,6 +119,7 @@ struct ContentView: View {
                 .onAppear {
                     self.closedCap.getPermission()}
                 .padding()
+//                .foregroundColor(self.closedCap.isRecordingColor)
             
             Spacer()
 

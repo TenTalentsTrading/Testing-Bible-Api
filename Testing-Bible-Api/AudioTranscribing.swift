@@ -8,6 +8,7 @@
 
 import Foundation
 import Speech
+import SwiftUI
 
 class ClosedCaptioning: ObservableObject {
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
@@ -18,6 +19,7 @@ class ClosedCaptioning: ObservableObject {
     @Published var captioning: String = "Waiting to Start!"
     @Published var isPlaying: Bool = false
     @Published var micEnabled: Bool = false
+    @Published var isRecordingColor: Color = Color.red
 
     
     //Thanks to https://developer.apple.com/documentation/speech/recognizing_speech_in_live_audio
@@ -79,6 +81,7 @@ class ClosedCaptioning: ObservableObject {
     
     func micButtonTapped(){
         if audioEngine.isRunning {
+            
             recognitionRequest?.endAudio()
             audioEngine.stop()
             isPlaying = false
