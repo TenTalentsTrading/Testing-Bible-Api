@@ -85,7 +85,7 @@ class PassageParsing {
         return allWordsConverted.joined(separator: " ")
     }
     
-    private func splitOnSpaces(_ textToSplit: String) -> [Substring]  {
+    func splitOnSpaces(_ textToSplit: String) -> [Substring]  {
         //var spaceChar: Character = " "
         return textToSplit.split(separator: Character(" "))
     }

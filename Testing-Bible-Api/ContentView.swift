@@ -46,32 +46,37 @@ struct ContentView: View {
     }
     
     var body: some View {
-        
         VStack{
-        Spacer()
-        Divider()
-        NavigationLink(
-            destination: ReferenceView(shouldPopToRootView: self.$isActive),
-            isActive: self.$isActive) {
-                Text(reference.beautifyReference())
-            }
-            .isDetailLink(false)
-        .modifier(ReferenceStyler())
-        Divider()
+            Spacer()
+            
+            Divider()
+            
+            NavigationLink(
+                destination: ReferenceView(shouldPopToRootView: self.$isActive),
+                isActive: self.$isActive) {
+                    Text(reference.beautifyReference())
+                }
+                .isDetailLink(false)
+            .modifier(ReferenceStyler())
+        
+            Divider()
 
-        Spacer()
-//                    HStack {
-//                        Text(self.closedCap.captioning)
-//                            .font(.body)
-//                            .truncationMode(.head)
-//                            .lineLimit(4)
-//                            .padding()
-//                    }
-//                    .frame(width: 350, height: 200)
-//                    .background(Color.red.opacity(0.25))
-//                    .padding()
-    
-    if shouldShowPassage {
+            Spacer()
+            
+            if shouldShowPassage == false {
+                HStack {
+                    Text(self.closedCap.captioning)
+                        .font(.body)
+                        .truncationMode(.head)
+                        .lineLimit(4)
+                        .padding()
+                }
+                .frame(width: 350, height: 200)
+                .background(Color.red.opacity(0.25))
+                .padding()
+            }
+            
+//            if shouldShowPassage {
                 ScrollView(.vertical) {
                     if self.reference.areWordsDropped == true {
                         Text("\(reference.firstWordPassage)")
@@ -84,66 +89,61 @@ struct ContentView: View {
                     }
                 }.padding()
                 .modifier(PassageTextStyler())
-            }
+//            }
             
-        Spacer()
+            Spacer()
         
-        HStack{
-            Spacer()
-            
-            Button(action: {
-                self.reference.isOnlyFirstLetterShown.toggle()
+            HStack{
+                Spacer()
+                
+                Button(action: {
+                    self.reference.isOnlyFirstLetterShown.toggle()
 
-            }) {
-                VStack{
-                    HStack{
-                        Text("C").padding(-4)
-                        Text("at").strikethrough(true).padding(-4)
-                    }.modifier(ButtonStylerLarge())
-                    Text("Drop Letters").modifier(ButtonStyler())
-                }.foregroundColor(self.reference.isFirstLetterDroppedColor)
-            }
-            .padding()
-            
-            Spacer()
-            
-            Button(action: {
-                self.closedCap.micButtonTapped()
-//                self.shouldShowPassage.toggle()
-            }) {
-                Image(systemName: !self.closedCap.micEnabled ? "mic.slash" : (self.closedCap.isPlaying ? "mic.circle.fill" : "mic.circle"))
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 75)
+                }) {
+                    VStack{
+                        HStack{
+                            Text("C").padding(-4)
+                            Text("at").strikethrough(true).padding(-4)
+                        }.modifier(ButtonStylerLarge())
+                        Text("Drop Letters").modifier(ButtonStyler())
+                    }.foregroundColor(self.reference.isFirstLetterDroppedColor)
                 }
-                .onAppear {
-                    self.closedCap.getPermission()}
                 .padding()
-//                .foregroundColor(self.closedCap.isRecordingColor)
-            
-            Spacer()
+                
+                Spacer()
+                
+                Button(action: {
+                    self.closedCap.micButtonTapped()
+                    self.shouldShowPassage.toggle()
+                }) {
+                    Image(systemName: !self.closedCap.micEnabled ? "mic.slash" : (self.closedCap.isPlaying ? "mic.circle.fill" : "mic.circle"))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 75)
+                    }
+                    .onAppear {
+                        self.closedCap.getPermission()}
+                    .padding()
+    //                .foregroundColor(self.closedCap.isRecordingColor)
+                
+                Spacer()
 
-            Button(action: {
-                self.reference.areWordsDropped.toggle()
-            }) {
-                VStack{
-                Text("Cat").strikethrough(true).modifier(ButtonStylerLarge())
-                    Text("Drop Words").modifier(ButtonStyler())
-                }.foregroundColor(self.reference.areWordsDroppedColor)
-            }
-            .padding()
-            
-            Spacer()
+                Button(action: {
+                    self.reference.areWordsDropped.toggle()
+                }) {
+                    VStack{
+                    Text("Cat").strikethrough(true).modifier(ButtonStylerLarge())
+                        Text("Drop Words").modifier(ButtonStyler())
+                    }.foregroundColor(self.reference.areWordsDroppedColor)
+                }
+                .padding()
+                
+                Spacer()
 
-            }
-            .onAppear(perform: reference.loadPassages)
-            .navigationBarTitle("Bible By Heart")
+                }
+                .onAppear(perform: reference.loadPassages)
+                .navigationBarTitle("Bible By Heart")
         }
-    }
-    
-    func removeAllButFirstLettersFromPassage() {
-        let newText = PassageParsing().DropAllButFirstLetters(text: reference.passage)
-        reference.passage = newText
     }
 }
 

@@ -73,6 +73,7 @@ class ScriptureReference: ObservableObject {
         }
     }
     
+    //Variables for Dropping All But First Word
     @Published var areWordsDroppedColor: Color = Color.blue
     @Published var areWordsDropped = false {
         didSet {
@@ -85,6 +86,11 @@ class ScriptureReference: ObservableObject {
             }
         }
     }
+    
+    //Variables for dictation
+    @Published var spokenPortionOfPassage = String()
+    @Published var unspokenPortionOfPassage = String()
+    
         
     //Running these functions upon initialization to prepare the object
     init() {
