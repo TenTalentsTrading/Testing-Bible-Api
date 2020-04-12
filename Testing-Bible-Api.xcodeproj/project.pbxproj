@@ -11,6 +11,13 @@
 		094E854D24353E2C00BF17EB /* ReferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E854C24353E2C00BF17EB /* ReferenceView.swift */; };
 		094E854F2437C90100BF17EB /* AudioTranscribing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E854E2437C90100BF17EB /* AudioTranscribing.swift */; };
 		094E85512437F16F00BF17EB /* PassageParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E85502437F16F00BF17EB /* PassageParsing.swift */; };
+		094E8556243C039200BF17EB /* PassageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E8555243C039200BF17EB /* PassageView.swift */; };
+		094E85582443CFD600BF17EB /* SpokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E85572443CFD600BF17EB /* SpokenView.swift */; };
+		094E855A2443D06C00BF17EB /* DropLettersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E85592443D06C00BF17EB /* DropLettersView.swift */; };
+		094E855C2443D07E00BF17EB /* DropWordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E855B2443D07E00BF17EB /* DropWordsView.swift */; };
+		094E855E2443D57B00BF17EB /* RecordButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E855D2443D57A00BF17EB /* RecordButtonView.swift */; };
+		094E85602443D64F00BF17EB /* ShowNextWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E855F2443D64F00BF17EB /* ShowNextWordView.swift */; };
+		094E85622443D69800BF17EB /* SkipWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E85612443D69800BF17EB /* SkipWordView.swift */; };
 		096BA51924269DF40083CD16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BA51824269DF40083CD16 /* AppDelegate.swift */; };
 		096BA51B24269DF40083CD16 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BA51A24269DF40083CD16 /* SceneDelegate.swift */; };
 		096BA51D24269DF40083CD16 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BA51C24269DF40083CD16 /* ContentView.swift */; };
@@ -26,6 +33,13 @@
 		094E854C24353E2C00BF17EB /* ReferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceView.swift; sourceTree = "<group>"; };
 		094E854E2437C90100BF17EB /* AudioTranscribing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTranscribing.swift; sourceTree = "<group>"; };
 		094E85502437F16F00BF17EB /* PassageParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassageParsing.swift; sourceTree = "<group>"; };
+		094E8555243C039200BF17EB /* PassageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassageView.swift; sourceTree = "<group>"; };
+		094E85572443CFD600BF17EB /* SpokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpokenView.swift; sourceTree = "<group>"; };
+		094E85592443D06C00BF17EB /* DropLettersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropLettersView.swift; sourceTree = "<group>"; };
+		094E855B2443D07E00BF17EB /* DropWordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropWordsView.swift; sourceTree = "<group>"; };
+		094E855D2443D57A00BF17EB /* RecordButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordButtonView.swift; sourceTree = "<group>"; };
+		094E855F2443D64F00BF17EB /* ShowNextWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowNextWordView.swift; sourceTree = "<group>"; };
+		094E85612443D69800BF17EB /* SkipWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipWordView.swift; sourceTree = "<group>"; };
 		096BA51524269DF40083CD16 /* Testing-Bible-Api.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Testing-Bible-Api.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		096BA51824269DF40083CD16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		096BA51A24269DF40083CD16 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +63,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		094E8554243C037600BF17EB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				094E854C24353E2C00BF17EB /* ReferenceView.swift */,
+				094E8555243C039200BF17EB /* PassageView.swift */,
+				094E85572443CFD600BF17EB /* SpokenView.swift */,
+				094E85592443D06C00BF17EB /* DropLettersView.swift */,
+				094E855B2443D07E00BF17EB /* DropWordsView.swift */,
+				094E855D2443D57A00BF17EB /* RecordButtonView.swift */,
+				094E855F2443D64F00BF17EB /* ShowNextWordView.swift */,
+				094E85612443D69800BF17EB /* SkipWordView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		096BA50C24269DF40083CD16 = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +97,7 @@
 		096BA51724269DF40083CD16 /* Testing-Bible-Api */ = {
 			isa = PBXGroup;
 			children = (
+				094E8554243C037600BF17EB /* Views */,
 				096BA52F2426A2520083CD16 /* Models */,
 				096BA52C2426A2240083CD16 /* Services */,
 				096BA51824269DF40083CD16 /* AppDelegate.swift */,
@@ -75,7 +105,6 @@
 				096BA51C24269DF40083CD16 /* ContentView.swift */,
 				094E85502437F16F00BF17EB /* PassageParsing.swift */,
 				094E854E2437C90100BF17EB /* AudioTranscribing.swift */,
-				094E854C24353E2C00BF17EB /* ReferenceView.swift */,
 				096BA51E24269DF90083CD16 /* Assets.xcassets */,
 				096BA52324269DF90083CD16 /* LaunchScreen.storyboard */,
 				096BA52624269DF90083CD16 /* Info.plist */,
@@ -181,13 +210,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				094E85512437F16F00BF17EB /* PassageParsing.swift in Sources */,
+				094E8556243C039200BF17EB /* PassageView.swift in Sources */,
 				096BA51924269DF40083CD16 /* AppDelegate.swift in Sources */,
+				094E855C2443D07E00BF17EB /* DropWordsView.swift in Sources */,
+				094E855A2443D06C00BF17EB /* DropLettersView.swift in Sources */,
+				094E855E2443D57B00BF17EB /* RecordButtonView.swift in Sources */,
 				094E854D24353E2C00BF17EB /* ReferenceView.swift in Sources */,
+				094E85602443D64F00BF17EB /* ShowNextWordView.swift in Sources */,
 				094E854F2437C90100BF17EB /* AudioTranscribing.swift in Sources */,
 				096BA51B24269DF40083CD16 /* SceneDelegate.swift in Sources */,
 				096BA52E2426A24D0083CD16 /* WebService.swift in Sources */,
+				094E85622443D69800BF17EB /* SkipWordView.swift in Sources */,
 				094E854B2433F2D700BF17EB /* ScriptureReference.swift in Sources */,
 				096BA533242C45680083CD16 /* BibleParts.swift in Sources */,
+				094E85582443CFD600BF17EB /* SpokenView.swift in Sources */,
 				096BA51D24269DF40083CD16 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

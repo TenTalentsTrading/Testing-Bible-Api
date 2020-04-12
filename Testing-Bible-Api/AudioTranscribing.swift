@@ -11,6 +11,7 @@ import Speech
 import SwiftUI
 
 class ClosedCaptioning: ObservableObject {
+    
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
@@ -20,8 +21,7 @@ class ClosedCaptioning: ObservableObject {
     @Published var isPlaying: Bool = false
     @Published var micEnabled: Bool = false
     @Published var isRecordingColor: Color = Color.red
-    @EnvironmentObject var reference : ScriptureReference
-    
+         
     var passageParsing = PassageParsing()
     
     //Thanks to https://developer.apple.com/documentation/speech/recognizing_speech_in_live_audio
@@ -54,10 +54,7 @@ class ClosedCaptioning: ObservableObject {
             
             if let result = result {
                 // Update the text view with the results.
-//                self.captioning = result.bestTranscription.formattedString
-                self.captioning = self.getLastWordSpoken(formattedString: result.bestTranscription.formattedString)
-                
-//                self.checkLastWordSpokenAgainstPassage(lastWordSpoken: result.bestTranscription)
+                self.captioning = result.bestTranscription.formattedString
                 isFinal = result.isFinal
             }
             
@@ -85,7 +82,6 @@ class ClosedCaptioning: ObservableObject {
     
     func micButtonTapped(){
         if audioEngine.isRunning {
-            
             recognitionRequest?.endAudio()
             audioEngine.stop()
             isPlaying = false
@@ -118,42 +114,5 @@ class ClosedCaptioning: ObservableObject {
                 }
             }
         }
-    }
-    
-    func getLastWordSpoken(formattedString: String) -> String{
-        let allWords = passageParsing.splitOnSpaces(formattedString)
-        return String(allWords.last ?? "Ready when you are...")
-    }
-
-    func checkLastWordSpokenAgainstPassage(lastWordSpoken: String){
-//        let lastWordSpoken(
-        let unSpokenWordsOfPassage = passageParsing.splitOnSpaces(reference.unspokenPortionOfPassage)
-        let nextWordToSpeak = getNextWordtoSpeak(words: unSpokenWordsOfPassage)
-
-        if nextWordToSpeak == lastWordSpoken {
-            print(lastWordSpoken)
-        }
-
-    }
-    
-    func getNextWordtoSpeak(words: [Substring]) -> String {
-        
-        var foundWords = 0
-        var outWord = "Ready when you are!"
-        
-        for word in words {
-            print(word)
-            if foundWords < 1 {
-                for char in word {
-                    if char.isLetter {
-                        foundWords += 1
-                        outWord = String(word)
-                        print("Outword = \(outWord)")
-                    }
-                }
-           }
-        }
-        
-        return outWord
     }
 }

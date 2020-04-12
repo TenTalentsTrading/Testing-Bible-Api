@@ -11,11 +11,11 @@ import SwiftUI
 struct ContentView: View {
 
     @EnvironmentObject var reference : ScriptureReference
-    @ObservedObject var closedCap = ClosedCaptioning()
 
     @State var isActive : Bool = false
     @State var showReference = false
-    @State var shouldShowPassage = true
+    @State var isRecordingColor = Color.red
+    @State var unspokenPassageOpacity = 0
 
     struct ReferenceStyler: ViewModifier {
            func body(content: Content) -> some View {
@@ -63,81 +63,55 @@ struct ContentView: View {
 
             Spacer()
             
-            if shouldShowPassage == false {
-                HStack {
-                    Text(self.closedCap.captioning)
-                        .font(.body)
-                        .truncationMode(.head)
-                        .lineLimit(4)
-                        .padding()
-                }
-                .frame(width: 350, height: 200)
-                .background(Color.red.opacity(0.25))
-                .padding()
+            if self.reference.shouldShowPassage == true {
+                PassageView().environmentObject(reference)
+               .padding()
+               .modifier(PassageTextStyler())
             }
             
-//            if shouldShowPassage {
-                ScrollView(.vertical) {
-                    if self.reference.areWordsDropped == true {
-                        Text("\(reference.firstWordPassage)")
-                    }
-                    else if self.reference.isOnlyFirstLetterShown == true {
-                        Text("\(reference.firstLetterPassage)")
-                    }
-                    else{
-                        Text("\(reference.passage)")
-                    }
-                }.padding()
-                .modifier(PassageTextStyler())
-//            }
+            else {
+                SpokenView().environmentObject(reference)
+               .modifier(PassageTextStyler())
+               .padding()
+            }
             
             Spacer()
         
             HStack{
-                Spacer()
-                
-                Button(action: {
-                    self.reference.isOnlyFirstLetterShown.toggle()
-
-                }) {
-                    VStack{
-                        HStack{
-                            Text("C").padding(-4)
-                            Text("at").strikethrough(true).padding(-4)
-                        }.modifier(ButtonStylerLarge())
-                        Text("Drop Letters").modifier(ButtonStyler())
-                    }.foregroundColor(self.reference.isFirstLetterDroppedColor)
-                }
-                .padding()
                 
                 Spacer()
-                
-                Button(action: {
-                    self.closedCap.micButtonTapped()
-                    self.shouldShowPassage.toggle()
-                }) {
-                    Image(systemName: !self.closedCap.micEnabled ? "mic.slash" : (self.closedCap.isPlaying ? "mic.circle.fill" : "mic.circle"))
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 75)
-                    }
-                    .onAppear {
-                        self.closedCap.getPermission()}
+            
+                if self.reference.shouldShowPassage == true {
+                    DropLettersView().environmentObject(reference)
                     .padding()
-    //                .foregroundColor(self.closedCap.isRecordingColor)
+                }
+                
+                else {
+                    ShowNextWordView().environmentObject(reference)
+                     .padding()
+                }
                 
                 Spacer()
-
-                Button(action: {
-                    self.reference.areWordsDropped.toggle()
-                }) {
-                    VStack{
-                    Text("Cat").strikethrough(true).modifier(ButtonStylerLarge())
-                        Text("Drop Words").modifier(ButtonStyler())
-                    }.foregroundColor(self.reference.areWordsDroppedColor)
+                
+                RecordButtonView().environmentObject(reference)
+                .onAppear {
+                    self.reference.getPermission()
                 }
                 .padding()
-                
+                .foregroundColor(self.reference.isRecording ? Color.red : Color.blue)
+            
+                Spacer()
+
+                 if self.reference.shouldShowPassage == true {
+                    DropWordsView().environmentObject(reference)
+                    .padding()
+                }
+                    
+                else {
+                    SkipWordView().environmentObject(reference)
+                    .padding()
+                }
+            
                 Spacer()
 
                 }

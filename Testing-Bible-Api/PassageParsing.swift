@@ -17,9 +17,11 @@ extension String: Identifiable {
 
 class PassageParsing {
     
-    private func splitOnPeriods(textToSplit: String) -> [Substring]  {
+    @EnvironmentObject var reference : ScriptureReference
+
+    private func splitOnPeriods(textToSplit: String) -> [String]  {
         //var spaceChar: Character = " "
-        return textToSplit.split(separator: Character("."))
+        return textToSplit.components(separatedBy: ".")
     }
     
     func DropAllButFirstWord(text: String) -> String {
@@ -36,11 +38,11 @@ class PassageParsing {
     }
     
     
-    func removeAllButFirstWordofSentence(inboundSentence: Substring) -> String {
+    func removeAllButFirstWordofSentence(inboundSentence: String) -> String {
         var convertedWords = [String]()
         var convertedCount = 0
                
-        let allWords = splitOnSpaces(String(inboundSentence))
+        let allWords = splitOnSpaces(inboundSentence)
 
         for word in allWords {
             
@@ -50,7 +52,7 @@ class PassageParsing {
                         convertedCount += 1
                     }
                 }
-                convertedWords.append(String(word))
+                convertedWords.append(word)
            }
            
            else{
@@ -62,7 +64,7 @@ class PassageParsing {
        return convertedWords.joined(separator: " ")
     }
     
-    func ReplaceAllCharactersWithUnderscore(word: Substring) -> String{
+    func ReplaceAllCharactersWithUnderscore(word: String) -> String{
         
         var outWord = String()
         for char in word {
@@ -85,12 +87,12 @@ class PassageParsing {
         return allWordsConverted.joined(separator: " ")
     }
     
-    func splitOnSpaces(_ textToSplit: String) -> [Substring]  {
+    func splitOnSpaces(_ textToSplit: String) -> [String]  {
         //var spaceChar: Character = " "
-        return textToSplit.split(separator: Character(" "))
+        return textToSplit.components(separatedBy: " ")
     }
     
-    private func leaveOnlyFirstLetter(words: [Substring]) -> [String] {
+    private func leaveOnlyFirstLetter(words: [String]) -> [String] {
         var wordsOut = [String]()
         
         for word in words {
@@ -100,7 +102,7 @@ class PassageParsing {
         return wordsOut
     }
     
-    private func convertAllButFirstLetterToHyphen(word: Substring) -> String {
+    private func convertAllButFirstLetterToHyphen(word: String) -> String {
         
         var count = 1
         var outString = String()
@@ -118,6 +120,95 @@ class PassageParsing {
         }
         
         return outString
+    }
+    
+    func writeSpokenWordsToView(dictation: String){
+        let lastWordSpoken = getLastWordSpoken(formattedString: dictation)
+        checkLastWordSpokenAgainstPassage(lastWordSpoken: lastWordSpoken)
+    }
+    
+    func getLastWordSpoken(formattedString: String) -> String{
+        let allWords = splitOnSpaces(formattedString)
+        return String(allWords.last ?? "Ready when you are...")
+    }
+    
+    func checkLastWordSpokenAgainstPassage(lastWordSpoken: String){
+            
+            print(reference.passage)
+//            let unSpokenWordsOfPassage = splitOnSpaces(reference.unspokenPortionOfPassage)
+//            let nextWordToSpeak = getNextWordtoSpeak(words: unSpokenWordsOfPassage)
+//
+//            if nextWordToSpeak == lastWordSpoken {
+//                print(lastWordSpoken)
+//            }
+        }
+        
+    func getNextWordtoSpeak(words: [Substring]) -> String {
+        
+        var foundWords = 0
+        var outWord = "Ready when you are!"
+        
+        for word in words {
+            print(word)
+            if foundWords < 1 {
+                for char in word {
+                    if char.isLetter {
+                        foundWords += 1
+                        outWord = String(word)
+                        print("Outword = \(outWord)")
+                    }
+                }
+           }
+        }
+        
+        return outWord
+    }
+    
+    func setSpokenPortionOfPassage(spokenWords: String, passage: String) -> String {
+        let spokenPortionOfPassage = String()
+        return spokenPortionOfPassage
+    }
+    
+    func getLastNWordsSpoken(dictation: String, wordsToReturn: Int) -> [String] {
+        
+        var outWords = [String]()
+        
+        let allWords = splitOnSpaces(dictation)
+        let totalWordCount = allWords.count
+        
+        if allWords.count > wordsToReturn {
+            for n in 0...(wordsToReturn-1) {
+                       outWords.append(allWords[totalWordCount - 1 - n])
+                   }
+        }
+        
+        else{
+            for word in allWords {
+                outWords.append(word)
+            }
+        }
+        
+        return outWords
+    }
+    
+    func stripWordOfNonLetters(word: String) -> String{
+        var outWord = String()
+        for char in word {
+            if char.isLetter {
+                outWord.append(char)
+                }
+            }
+        
+        return outWord
+    }
+    
+    func isWord(word: String) -> Bool {
+        for char in word {
+            if char.isLetter {
+                return true
+                }
+            }
+        return false
     }
 }
 
